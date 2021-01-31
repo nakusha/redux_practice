@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { actionCreators } from "../store";
 
-const Home = (props) => {
-  console.log(props)
+const Home = ({toDos, addToDo, deleteToDo}) => {
   const [text, setText] = useState("");
   
   const onChange = (e) => {
@@ -11,7 +11,8 @@ const Home = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(text);
+    addToDo(text);
+    setText("");
   }
 
   return (
@@ -22,18 +23,25 @@ const Home = (props) => {
         <button>Add</button>
       </form>
       <ul>
-        {JSON.stringify(props.toDos)}
+        {JSON.stringify(toDos)}
       </ul>
     </>
   )
 }
 
-// redux store에 저장된 값을 불러오는것
+// redux store에 저장된 값을 불러오는것(store.getSate())
 const mapStateToProps = (state) => {
   //props에 값을 넣을수 있다.
   return { toDos:state }
 
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return { 
+    addToDo: (text) => dispatch(actionCreators.addToDo(text)),
+    deleteToDo: (id) => dispatch(actionCreators.deleteToDo(id))
+  }
+}
+
 // store와 component와 연결해줌
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
