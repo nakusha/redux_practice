@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { actionCreators } from "../store";
+import ToDo from "./ToDo";
 
 const Home = ({toDos, addToDo, deleteToDo}) => {
   const [text, setText] = useState("");
@@ -23,7 +24,7 @@ const Home = ({toDos, addToDo, deleteToDo}) => {
         <button>Add</button>
       </form>
       <ul>
-        {JSON.stringify(toDos)}
+        {toDos.map((toDo, index) => <ToDo key={`todo${index}`} {...toDo}/>)}
       </ul>
     </>
   )
@@ -39,7 +40,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return { 
     addToDo: (text) => dispatch(actionCreators.addToDo(text)),
-    deleteToDo: (id) => dispatch(actionCreators.deleteToDo(id))
   }
 }
 
